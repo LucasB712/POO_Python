@@ -1,0 +1,33 @@
+Criar ambiente
+
+python -m venv (nome do ambiente)
+
+-m é um módulo de script
+
+#CABECALHO DOS CODIGOS NO INCLUDE
+código c
+
+#Lib armazena todos pacotes e dependencias utilizadas no projeto
+
+Scripts 
+#Scripts relacionados a essa pasta
+
+ativar no windows
+
+venv\Scripts\activate
+
+desativar ambiente
+
+deactivate
+
+#verificar todos os pacotes existentes
+pip freeze
+
+#Cria um txt com todos os pacotes existentes
+pip freeze > requirements.txt
+
+#Subir servidor
+uvicorn (nome arquivo):app -- reload
+
+#documentacao com todas as rotas
+http://127.0.0.1:8000/docs

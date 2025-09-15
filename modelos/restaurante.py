@@ -1,0 +1,98 @@
+from modelos.avaliacao import Avaliacao
+from modelos.cardapio.item_cardapio import ItemCardapio
+
+class Restaurante:
+    restaurantes = []
+#Init cobra já os parâmetros nele. Self espera os atributos próprios de seu objeto
+    def __init__(self, nome, categoria):
+        #Title(Pega letra maiuscula já) 
+        self._nome = nome.title()
+        #Letra maiúscula
+        self._categoria = categoria.upper()
+        #O underline eles usam propriedade para poder mudar
+        self._ativo = False
+        Restaurante.restaurantes.append(self)
+        self._avaliacao = []
+        self._cardapio =  []
+
+
+    def __str__(self):
+        return f' {self._nome} | {self._categoria}'
+    @classmethod
+    def listar_restaurantes(cls):
+        print(f"{'Nome do Restaurante'.ljust(28)} | {'Categoria'.ljust(25)} | {'Avaliação'.ljust(25)} {'Status'}'")
+        for restaurante in cls.restaurantes:
+            print(f'Restaurante: {restaurante._nome.ljust(25)} | Categoria: {restaurante._categoria.ljust(25)} | {str(restaurante.media_avaliacoes).ljust(25)} | Ativo: {restaurante.ativo}')
+    @property
+    def ativo(self):
+        return '✅' if self._ativo else '❌'
+    
+    def alternar_estado(self):
+        self._ativo = not self._ativo      
+     
+    def receber_avaliacoes(self, cliente, nota):
+        if 0 < nota <= 5:
+            avaliacao = Avaliacao(cliente, nota)
+            self._avaliacao.append(avaliacao)
+    
+    #Para exibir
+    @property
+    def media_avaliacoes(self):
+        if not self._avaliacao:
+            return '-'
+        soma_notas = sum(avaliacao._nota for avaliacao in self._avaliacao)        
+        quantidade_notas = len(self._avaliacao)
+        #Arredondar para uma casa decimal
+        media = round(soma_notas / quantidade_notas, 1)
+        return media
+    
+    #def adicionar_bebida_cardapio(self, bebida):
+    #    self._cardapio.append(bebida)
+    #def adicionar_prato_cardapio(self, prato):
+    #    self._cardapio.append(prato)
+
+    def adicionar_item_no_cardapio(self,item):
+        #Se for instancia de item cardapio, dá certo
+        if isinstance(item, ItemCardapio):
+            self._cardapio.append(item)
+
+    @property
+    def exibir_cardapio(self):
+        print(f'Cardapio do Restaurante {self._nome}\n')
+        for i, item in enumerate(self._cardapio, start = 1):
+            #Se tiver atributo
+                mensagem_prato = f'{i}. -- Nome: {item._nome}  | Preço: R$ {item._preco} | Descrição: {item._descricao}'
+                print(mensagem_prato)
+
+
+
+
+
+
+
+restaurante_praca = Restaurante('praca','Gourmet')
+restaurante_pizza = Restaurante('pizza Express', 'Italiana')
+
+restaurantes = [restaurante_praca, restaurante_pizza]
+
+#Self(Python) ou This ou qualquer nome == Mesma coisa(referenciar o mesmo objeto)
+
+#Função dir exibe atributos do objeto. Melhor de usar em classe que não conheço
+
+print(dir(restaurante_praca))
+
+#Dicionario com atributos da classe: funcao vars(formato json)
+
+print(vars(restaurante_praca))
+print(vars(restaurante_pizza))
+
+#Método str
+
+print(restaurante_pizza)
+
+#Por lista agora:
+Restaurante.listar_restaurantes()
+
+#Pega um atributo e muda forma como ele vai ser lido
+
+#Simbolo: Cool symbols
